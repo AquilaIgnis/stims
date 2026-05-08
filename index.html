@@ -28,9 +28,9 @@
         --border-mid: #282828;
         --amber: #e89a0a;
         --amber-bright: #ffb020;
-        --text: #ede8dc;
-        --text-dim: #8a857c;
-        --text-muted: #474340;
+        --text: #f5f0e8;
+        --text-dim: #c8c2b8;
+        --text-muted: #9a9490;
       }
 
       *,
@@ -162,7 +162,7 @@
         font-size: clamp(0.78rem, 1.4vw, 0.92rem);
         font-weight: 300;
         font-style: italic;
-        color: var(--text-dim);
+        color: var(--text);
         line-height: 2;
         opacity: 0;
         animation: fadeUp 0.7s 0.35s ease forwards;
@@ -208,25 +208,27 @@
       }
 
       .btn-outline {
-        background: transparent;
+        background: #1e1a10;
         color: var(--text);
-        border: 1px solid var(--border-mid);
+        border: 1px solid #5a4e30;
       }
 
       .btn-outline:hover {
+        background: #2a2214;
         border-color: var(--amber);
-        color: var(--amber);
+        color: var(--amber-bright);
       }
 
       .btn-ghost {
-        background: transparent;
-        color: var(--text-muted);
-        border: 1px solid var(--border);
+        background: #181818;
+        color: var(--text-dim);
+        border: 1px solid #3a3530;
       }
 
       .btn-ghost:hover {
-        color: var(--text-dim);
-        border-color: var(--border-mid);
+        background: #202020;
+        color: var(--text);
+        border-color: #5a5550;
       }
 
       .btn.disabled {
@@ -597,8 +599,8 @@
             <span class="badge">SOON</span>
           </a>
 
-          <!-- F-Droid — uncomment href when available -->
-          <a href="#" class="btn btn-outline disabled" aria-disabled="true">
+          <!-- F-Droid -->
+          <a href="https://f-droid.org/en/packages/acidburn.stims/" class="btn btn-amber" target="_blank" rel="noopener noreferrer">
             <!-- Box icon -->
             <svg class="icon" viewBox="0 0 24 24">
               <path
@@ -606,7 +608,6 @@
               />
             </svg>
             F-Droid
-            <span class="badge">SOON</span>
           </a>
 
           <!-- GitHub -->
