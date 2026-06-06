@@ -79,6 +79,8 @@ class StimsService : Service() {
     }
 
     private fun updateNotification() {
+        // Ensure the channel exists before startForeground(); onStartCommand may call
+        createNotificationChannel()
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Stims Daemon Running")
             .setContentText("Monitoring ${selectedPackages.size} apps")
@@ -201,6 +203,6 @@ class StimsService : Service() {
         private const val TAG = "StimsService"
 
         // Vendors that disable SCREEN_BRIGHT_WAKE_LOCK — use overlay strategy instead
-        val OVERLAY_VENDORS = setOf("samsung")
+        val OVERLAY_VENDORS = setOf("samsung","Realme")
     }
 }
