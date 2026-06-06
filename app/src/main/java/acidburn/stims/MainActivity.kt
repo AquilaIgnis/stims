@@ -16,6 +16,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -415,11 +416,16 @@ fun SectionHeader(title: String) {
 
 @Composable
 fun StimmedAppItem(app: AppInfo, onRemove: () -> Unit) {
+    val dark = isSystemInDarkTheme()
+    val cardColor = if (dark) Color(0xFF1B3A2B) else Color(0xFFE8F5E9)
+    val nameColor = if (dark) Color(0xFFE8F5E9) else Color(0xFF1B5E20)
+    val stimmedColor = if (dark) Color(0xFFFFB74D) else Color(0xFFEF6C00)
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 6.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFE8F5E9)),
+        colors = CardDefaults.cardColors(containerColor = cardColor),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Row(
@@ -429,11 +435,11 @@ fun StimmedAppItem(app: AppInfo, onRemove: () -> Unit) {
             AppIcon(app.icon)
             Spacer(modifier = Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = app.name, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold)
-                Text(text = "STIMMED", style = MaterialTheme.typography.labelSmall, color = Color(0xFF2E7D32))
+                Text(text = app.name, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = nameColor)
+                Text(text = "STIMMED", style = MaterialTheme.typography.labelSmall, color = stimmedColor)
             }
             IconButton(onClick = onRemove) {
-                Icon(Icons.Default.Delete, contentDescription = "Remove", tint = Color.Gray)
+                Icon(Icons.Default.Delete, contentDescription = "Remove", tint = if (dark) Color(0xFFB0BEC5) else Color.Gray)
             }
         }
     }
