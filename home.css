@@ -147,6 +147,7 @@ body::after {
     display: flex;
     gap: 0.75rem;
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
     margin-top: 3rem;
     opacity: 0;
@@ -157,7 +158,9 @@ body::after {
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;
-    padding: 0.7rem 1.4rem;
+    height: 40px;
+    padding: 0 1.4rem;
+    box-sizing: border-box;
     font-family: 'Azeret Mono', monospace;
     font-size: 0.7rem;
     font-weight: 500;
@@ -224,6 +227,24 @@ body::after {
     height: 15px;
     fill: currentColor;
     flex-shrink: 0;
+}
+
+/* F-Droid official badge — self-contained graphic, sized to match buttons */
+.fdroid-badge {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    transition: opacity 0.18s ease;
+}
+
+.fdroid-badge:hover {
+    opacity: 0.85;
+}
+
+.fdroid-badge img {
+    display: block;
+    height: 60px;
+    width: auto;
 }
 
 /* ─── DIVIDER ─── */
@@ -511,7 +532,8 @@ footer {
         align-items: stretch;
     }
 
-    .btn {
+    .btn,
+    .fdroid-badge {
         justify-content: center;
     }
 

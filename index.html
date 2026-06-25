@@ -1,205 +1,234 @@
 <!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stims — Keep Your Screen Awake</title>
-    <meta name="description"
-        content="Stims keeps your Android screen awake while your chosen apps are open. Simple, lightweight, no bloat." />
+    <meta
+      name="description"
+      content="Stims keeps your Android screen awake while your chosen apps are open. Simple, lightweight, no bloat."
+    />
     <meta property="og:title" content="Stims — Keep Your Screen Awake" />
-    <meta property="og:description"
-        content="Pick the apps. Forget the rest. Your screen stays on when you need it to." />
+    <meta
+      property="og:description"
+      content="Pick the apps. Forget the rest. Your screen stays on when you need it to."
+    />
     <meta property="og:type" content="website" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;700;900&family=Azeret+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap"
-        rel="stylesheet" />
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;700;900&family=Azeret+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="home.css" />
-</head>
+  </head>
 
-<body>
+  <body>
     <!-- ═══ HERO ═══ -->
     <section class="hero">
-        <div class="orb"></div>
-        <div class="orb-ring"></div>
+      <div class="orb"></div>
+      <div class="orb-ring"></div>
 
-        <div class="hero-content">
-            <p class="eyebrow">Android Utility</p>
+      <div class="hero-content">
+        <p class="eyebrow">Android Utility</p>
 
-            <h1 class="app-name">STIM<span class="accent">S</span></h1>
+        <h1 class="app-name">STIM<span class="accent">S</span></h1>
 
-            <p class="tagline">
-                Your screen stays on when you need it to.<br />
-                Pick the apps. Forget the rest.
-            </p>
+        <p class="tagline">
+          Your screen stays on when you need it to.<br />
+          Pick the apps. Forget the rest.
+        </p>
 
-            <div class="download-row">
-                <!-- Google Play — uncomment href when available -->
-                <a href="#" class="btn btn-amber disabled" aria-disabled="true">
-                    <!-- Play icon -->
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path
-                            d="M5.31 3.07C4.55 2.64 3.79 3.13 3.79 4.01v15.98c0 .88.76 1.37 1.52.94l14.1-7.99a1.07 1.07 0 0 0 0-1.88L5.31 3.07z" />
-                    </svg>
-                    Google Play
-                    <span class="badge">SOON</span>
-                </a>
+        <div class="download-row">
+          <!-- Google Play — uncomment href when available -->
+          <a href="#" class="btn btn-amber disabled" aria-disabled="true">
+            <!-- Play icon -->
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M5.31 3.07C4.55 2.64 3.79 3.13 3.79 4.01v15.98c0 .88.76 1.37 1.52.94l14.1-7.99a1.07 1.07 0 0 0 0-1.88L5.31 3.07z"
+              />
+            </svg>
+            Google Play
+            <span class="badge">SOON</span>
+          </a>
 
-                <!-- F-Droid -->
-                <a href="https://f-droid.org/en/packages/acidburn.stims/" class="btn btn-amber" target="_blank"
-                    rel="noopener noreferrer">
-                    <!-- Box icon -->
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path
-                            d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zm0 12H4V9h16v10zM20 3H4v2h16V3z" />
-                    </svg>
-                    F-Droid
-                </a>
+          <!-- F-Droid -->
+          <a
+            href="https://f-droid.org/en/packages/acidburn.stims/"
+            class="fdroid-badge"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://f-droid.org/badge/get-it-on.svg"
+              alt="Get it on F-Droid"
+            />
+          </a>
 
-                <!-- GitHub -->
-                <a href="https://github.com/acidburnmonkey/stims" class="btn btn-ghost" target="_blank"
-                    rel="noopener noreferrer">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path
-                            d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z" />
-                    </svg>
-                    GitHub
-                </a>
-            </div>
+          <!-- GitHub -->
+          <a
+            href="https://github.com/acidburnmonkey/stims"
+            class="btn btn-ghost"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"
+              />
+            </svg>
+            GitHub
+          </a>
         </div>
+      </div>
     </section>
 
     <!-- ═══ COMPAT STRIP ═══ -->
     <div class="compat-strip">
-        <span class="compat-item">Minimum <span>Android 7.0 (API 24)</span></span>
-        <span class="compat-item">Target <span>Android 15 (API 35)</span></span>
-        <span class="compat-item">Size <span>Lightweight</span></span>
-        <span class="compat-item">License <span>GPL v3</span></span>
+      <span class="compat-item">Minimum <span>Android 7.0 (API 24)</span></span>
+      <span class="compat-item">Target <span>Android 15 (API 35)</span></span>
+      <span class="compat-item">Size <span>Lightweight</span></span>
+      <span class="compat-item">License <span>GPL v3</span></span>
     </div>
 
     <!-- ═══ SCREENSHOTS ═══ -->
     <div class="section">
-        <p class="section-label">Screenshots</p>
-        <div class="screenshots-track">
-            <div class="screenshot">
-                <img src="phoneScreenshots/s1.jpeg" alt="Stims screenshot 1" loading="lazy" />
-            </div>
-            <div class="screenshot">
-                <img src="phoneScreenshots/s2.jpeg" alt="Stims screenshot 2" loading="lazy" />
-            </div>
-            <div class="screenshot">
-                <img src="phoneScreenshots/s3.jpeg" alt="Stims screenshot 3" loading="lazy" />
-            </div>
+      <p class="section-label">Screenshots</p>
+      <div class="screenshots-track">
+        <div class="screenshot">
+          <img
+            src="phoneScreenshots/s1.jpeg"
+            alt="Stims screenshot 1"
+            loading="lazy"
+          />
         </div>
+        <div class="screenshot">
+          <img
+            src="phoneScreenshots/s2.jpeg"
+            alt="Stims screenshot 2"
+            loading="lazy"
+          />
+        </div>
+        <div class="screenshot">
+          <img
+            src="phoneScreenshots/s3.jpeg"
+            alt="Stims screenshot 3"
+            loading="lazy"
+          />
+        </div>
+      </div>
     </div>
 
     <hr />
 
     <!-- ═══ FEATURES ═══ -->
     <div class="section">
-        <p class="section-label">What it does</p>
-        <div class="features-grid">
-            <div class="feature-card">
-                <span class="feature-glyph">◉</span>
-                <h3 class="feature-title">Per-app control</h3>
-                <p class="feature-desc">
-                    Choose exactly which apps keep the screen awake. Every other app
-                    behaves as normal. Your battery, your rules.
-                </p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-glyph">◈</span>
-                <h3 class="feature-title">Silent service</h3>
-                <p class="feature-desc">
-                    A lightweight background service watches the foreground app and
-                    manages the wake lock automatically — no interaction needed.
-                </p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-glyph">◇</span>
-                <h3 class="feature-title">Zero bloat</h3>
-                <p class="feature-desc">
-                    No accounts. No analytics. No network access. No trackers. One
-                    purpose, done well.
-                </p>
-            </div>
+      <p class="section-label">What it does</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-glyph">◉</span>
+          <h3 class="feature-title">Per-app control</h3>
+          <p class="feature-desc">
+            Choose exactly which apps keep the screen awake. Every other app
+            behaves as normal. Your battery, your rules.
+          </p>
         </div>
+        <div class="feature-card">
+          <span class="feature-glyph">◈</span>
+          <h3 class="feature-title">Silent service</h3>
+          <p class="feature-desc">
+            A lightweight background service watches the foreground app and
+            manages the wake lock automatically — no interaction needed.
+          </p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-glyph">◇</span>
+          <h3 class="feature-title">Zero bloat</h3>
+          <p class="feature-desc">
+            No accounts. No analytics. No network access. No trackers. One
+            purpose, done well.
+          </p>
+        </div>
+      </div>
     </div>
 
     <hr />
 
     <!-- ═══ HOW IT WORKS ═══ -->
     <div class="section">
-        <p class="section-label">Setup</p>
-        <div class="steps-list">
-            <div class="step">
-                <div class="step-num">01</div>
-                <div>
-                    <p class="step-title">Grant Usage Access</p>
-                    <p class="step-desc">
-                        On first launch, Stims will open the system permission screen.
-                        Navigate to
-                        <span class="step-code">Settings → Apps → Special app access → Usage access</span>, find Stims,
-                        and toggle it on.
-                    </p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-num">02</div>
-                <div>
-                    <p class="step-title">Pick your apps</p>
-                    <p class="step-desc">
-                        Back in Stims, tap any app in the list to mark it. Your selection
-                        is saved immediately — no confirm button needed.
-                    </p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-num">03</div>
-                <div>
-                    <p class="step-title">Done</p>
-                    <p class="step-desc">
-                        Switch to a marked app and the screen stays on at full brightness.
-                        Switch away and normal sleep behavior returns. That's the whole
-                        thing.
-                    </p>
-                </div>
-            </div>
+      <p class="section-label">Setup</p>
+      <div class="steps-list">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div>
+            <p class="step-title">Grant Usage Access</p>
+            <p class="step-desc">
+              On first launch, Stims will open the system permission screen.
+              Navigate to
+              <span class="step-code"
+                >Settings → Apps → Special app access → Usage access</span
+              >, find Stims, and toggle it on.
+            </p>
+          </div>
         </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div>
+            <p class="step-title">Pick your apps</p>
+            <p class="step-desc">
+              Back in Stims, tap any app in the list to mark it. Your selection
+              is saved immediately — no confirm button needed.
+            </p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div>
+            <p class="step-title">Done</p>
+            <p class="step-desc">
+              Switch to a marked app and the screen stays on at full brightness.
+              Switch away and normal sleep behavior returns. That's the whole
+              thing.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <hr />
 
     <!-- ═══ PERMISSIONS ═══ -->
     <div class="section">
-        <p class="section-label">Permissions</p>
-        <div class="perm-card">
-            <div class="perm-dot">◎</div>
-            <div>
-                <p class="perm-name">Usage Access</p>
-                <p class="perm-desc">
-                    Used solely to detect which app is currently in the foreground so
-                    the wake lock can be acquired or released accordingly. This data is
-                    processed entirely on-device and is never transmitted anywhere.
-                    Stims has no internet permission and cannot contact any external
-                    server.
-                </p>
-            </div>
+      <p class="section-label">Permissions</p>
+      <div class="perm-card">
+        <div class="perm-dot">◎</div>
+        <div>
+          <p class="perm-name">Usage Access</p>
+          <p class="perm-desc">
+            Used solely to detect which app is currently in the foreground so
+            the wake lock can be acquired or released accordingly. This data is
+            processed entirely on-device and is never transmitted anywhere.
+            Stims has no internet permission and cannot contact any external
+            server.
+          </p>
         </div>
+      </div>
     </div>
 
     <!-- ═══ FOOTER ═══ -->
     <footer>
-        <p class="footer-left">
-            Stims &nbsp;·&nbsp; Android 7.0+ &nbsp;·&nbsp; Open Source
-        </p>
-        <nav class="footer-links">
-            <a href="https://github.com/acidburnmonkey/stims" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a href="privacy.html">Privacy Policy</a>
-        </nav>
+      <p class="footer-left">
+        Stims &nbsp;·&nbsp; Android 7.0+ &nbsp;·&nbsp; Open Source
+      </p>
+      <nav class="footer-links">
+        <a
+          href="https://github.com/acidburnmonkey/stims"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub</a
+        >
+        <a href="privacy.html">Privacy Policy</a>
+      </nav>
     </footer>
-</body>
-
+  </body>
 </html>
