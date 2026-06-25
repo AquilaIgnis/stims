@@ -1,779 +1,205 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stims — Keep Your Screen Awake</title>
-    <meta
-      name="description"
-      content="Stims keeps your Android screen awake while your chosen apps are open. Simple, lightweight, no bloat."
-    />
+    <meta name="description"
+        content="Stims keeps your Android screen awake while your chosen apps are open. Simple, lightweight, no bloat." />
     <meta property="og:title" content="Stims — Keep Your Screen Awake" />
-    <meta
-      property="og:description"
-      content="Pick the apps. Forget the rest. Your screen stays on when you need it to."
-    />
+    <meta property="og:description"
+        content="Pick the apps. Forget the rest. Your screen stays on when you need it to." />
     <meta property="og:type" content="website" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;700;900&family=Azeret+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        --bg: #070707;
-        --surface: #0e0e0e;
-        --border: #1c1c1c;
-        --border-mid: #282828;
-        --amber: #e89a0a;
-        --amber-bright: #ffb020;
-        --text: #f5f0e8;
-        --text-dim: #c8c2b8;
-        --text-muted: #9a9490;
-      }
-
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        background-color: var(--bg);
-        color: var(--text);
-        font-family: 'Azeret Mono', monospace;
-        font-weight: 400;
-        line-height: 1.6;
-        min-height: 100vh;
-        overflow-x: hidden;
-      }
-
-      /* Grain overlay */
-      body::after {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-        opacity: 0.035;
-        pointer-events: none;
-        z-index: 999;
-      }
-
-      /* ─── HERO ─── */
-      .hero {
-        position: relative;
-        min-height: 100svh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 4rem 2rem 6rem;
-        overflow: hidden;
-      }
-
-      /* Ambient breathing orb */
-      .orb {
-        position: absolute;
-        width: 700px;
-        height: 700px;
-        border-radius: 50%;
-        background: radial-gradient(
-          circle,
-          rgba(232, 154, 10, 0.22) 0%,
-          rgba(232, 154, 10, 0.07) 35%,
-          transparent 65%
-        );
-        pointer-events: none;
-        animation: breathe 7s ease-in-out infinite;
-      }
-
-      @keyframes breathe {
-        0%,
-        100% {
-          transform: scale(1);
-          opacity: 0.75;
-        }
-
-        50% {
-          transform: scale(1.12);
-          opacity: 1;
-        }
-      }
-
-      /* Secondary haze ring */
-      .orb-ring {
-        position: absolute;
-        width: 900px;
-        height: 900px;
-        border-radius: 50%;
-        background: radial-gradient(
-          circle,
-          transparent 45%,
-          rgba(232, 154, 10, 0.03) 60%,
-          transparent 70%
-        );
-        pointer-events: none;
-        animation: breathe 7s ease-in-out infinite reverse;
-      }
-
-      .hero-content {
-        position: relative;
-        z-index: 1;
-        text-align: center;
-        max-width: 820px;
-      }
-
-      .eyebrow {
-        font-size: 0.62rem;
-        font-weight: 500;
-        letter-spacing: 0.35em;
-        color: var(--amber);
-        text-transform: uppercase;
-        margin-bottom: 1.25rem;
-        opacity: 0;
-        animation: fadeUp 0.6s 0.1s ease forwards;
-      }
-
-      .app-name {
-        font-family: 'Big Shoulders Display', sans-serif;
-        font-weight: 900;
-        font-size: clamp(6.5rem, 22vw, 15rem);
-        line-height: 0.85;
-        letter-spacing: -0.01em;
-        text-transform: uppercase;
-        color: var(--text);
-        opacity: 0;
-        animation: fadeUp 0.7s 0.2s ease forwards;
-      }
-
-      .app-name .accent {
-        color: var(--amber);
-      }
-
-      .tagline {
-        margin-top: 2.25rem;
-        font-size: clamp(0.78rem, 1.4vw, 0.92rem);
-        font-weight: 300;
-        font-style: italic;
-        color: var(--text);
-        line-height: 2;
-        opacity: 0;
-        animation: fadeUp 0.7s 0.35s ease forwards;
-      }
-
-      /* ─── BUTTONS ─── */
-      .download-row {
-        display: flex;
-        gap: 0.75rem;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-top: 3rem;
-        opacity: 0;
-        animation: fadeUp 0.7s 0.5s ease forwards;
-      }
-
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.55rem;
-        padding: 0.7rem 1.4rem;
-        font-family: 'Azeret Mono', monospace;
-        font-size: 0.7rem;
-        font-weight: 500;
-        letter-spacing: 0.06em;
-        text-decoration: none;
-        border-radius: 3px;
-        transition: all 0.18s ease;
-        white-space: nowrap;
-        cursor: pointer;
-      }
-
-      .btn-amber {
-        background: var(--amber);
-        color: #000;
-        border: 1px solid var(--amber);
-      }
-
-      .btn-amber:hover {
-        background: var(--amber-bright);
-        border-color: var(--amber-bright);
-        box-shadow: 0 0 28px rgba(232, 154, 10, 0.35);
-      }
-
-      .btn-outline {
-        background: #1e1a10;
-        color: var(--text);
-        border: 1px solid #5a4e30;
-      }
-
-      .btn-outline:hover {
-        background: #2a2214;
-        border-color: var(--amber);
-        color: var(--amber-bright);
-      }
-
-      .btn-ghost {
-        background: #181818;
-        color: var(--text-dim);
-        border: 1px solid #3a3530;
-      }
-
-      .btn-ghost:hover {
-        background: #202020;
-        color: var(--text);
-        border-color: #5a5550;
-      }
-
-      .btn.disabled {
-        opacity: 0.38;
-        pointer-events: none;
-      }
-
-      .badge {
-        font-size: 0.5rem;
-        padding: 0.12rem 0.35rem;
-        background: rgba(255, 255, 255, 0.07);
-        color: var(--text-muted);
-        border-radius: 2px;
-        letter-spacing: 0.1em;
-      }
-
-      .icon {
-        width: 15px;
-        height: 15px;
-        fill: currentColor;
-        flex-shrink: 0;
-      }
-
-      /* ─── DIVIDER ─── */
-      hr {
-        border: none;
-        border-top: 1px solid var(--border);
-      }
-
-      /* ─── COMPATIBILITY STRIP ─── */
-      .compat-strip {
-        border-top: 1px solid var(--border);
-        border-bottom: 1px solid var(--border);
-        padding: 1rem 2rem;
-        display: flex;
-        justify-content: center;
-        gap: 3rem;
-        flex-wrap: wrap;
-      }
-
-      .compat-item {
-        font-size: 0.62rem;
-        letter-spacing: 0.1em;
-        color: var(--text-muted);
-        text-transform: uppercase;
-      }
-
-      .compat-item span {
-        color: var(--text-dim);
-      }
-
-      /* ─── SECTION WRAPPER ─── */
-      .section {
-        padding: 5rem 2rem;
-        max-width: 920px;
-        margin: 0 auto;
-      }
-
-      .section-label {
-        font-size: 0.58rem;
-        letter-spacing: 0.4em;
-        color: var(--amber);
-        text-transform: uppercase;
-        margin-bottom: 3rem;
-      }
-
-      /* ─── FEATURES GRID ─── */
-      .features-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        border: 1px solid var(--border);
-        background: var(--border);
-        gap: 1px;
-      }
-
-      .feature-card {
-        background: var(--bg);
-        padding: 2.5rem 1.75rem;
-        transition: background 0.2s;
-      }
-
-      .feature-card:hover {
-        background: var(--surface);
-      }
-
-      .feature-glyph {
-        font-size: 1.6rem;
-        line-height: 1;
-        color: var(--amber);
-        margin-bottom: 1.4rem;
-        display: block;
-        opacity: 0.85;
-      }
-
-      .feature-title {
-        font-family: 'Big Shoulders Display', sans-serif;
-        font-weight: 700;
-        font-size: 1.3rem;
-        letter-spacing: 0.03em;
-        text-transform: uppercase;
-        color: var(--text);
-        margin-bottom: 0.65rem;
-      }
-
-      .feature-desc {
-        font-size: 0.75rem;
-        font-weight: 300;
-        color: var(--text-dim);
-        line-height: 1.85;
-      }
-
-      /* ─── STEPS ─── */
-      .steps-list {
-        display: grid;
-        gap: 0;
-        margin-top: 2rem;
-      }
-
-      .step {
-        display: grid;
-        grid-template-columns: 5rem 1fr;
-        gap: 1.5rem;
-        padding: 2.25rem 0;
-        border-bottom: 1px solid var(--border);
-        align-items: start;
-      }
-
-      .step:first-child {
-        border-top: 1px solid var(--border);
-      }
-
-      .step-num {
-        font-family: 'Big Shoulders Display', sans-serif;
-        font-weight: 900;
-        font-size: 4rem;
-        line-height: 1;
-        color: var(--border-mid);
-        padding-top: 0.1rem;
-      }
-
-      .step-title {
-        font-size: 0.78rem;
-        font-weight: 500;
-        color: var(--text);
-        margin-bottom: 0.5rem;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-      }
-
-      .step-desc {
-        font-size: 0.74rem;
-        font-weight: 300;
-        color: var(--text-dim);
-        line-height: 1.85;
-      }
-
-      .step-code {
-        display: inline-block;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        padding: 0.1rem 0.45rem;
-        border-radius: 2px;
-        font-size: 0.68rem;
-        color: var(--amber);
-        margin-top: 0.5rem;
-      }
-
-      /* ─── PERMISSION CARD ─── */
-      .perm-card {
-        border: 1px solid var(--border);
-        padding: 2rem;
-        margin-top: 2rem;
-        display: grid;
-        grid-template-columns: 2.5rem 1fr;
-        gap: 1.5rem;
-        align-items: start;
-      }
-
-      .perm-dot {
-        width: 2.5rem;
-        height: 2.5rem;
-        border-radius: 50%;
-        border: 1px solid var(--border-mid);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.9rem;
-        color: var(--amber);
-        flex-shrink: 0;
-      }
-
-      .perm-name {
-        font-size: 0.68rem;
-        font-weight: 500;
-        color: var(--amber);
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        margin-bottom: 0.5rem;
-      }
-
-      .perm-desc {
-        font-size: 0.75rem;
-        font-weight: 300;
-        color: var(--text-dim);
-        line-height: 1.85;
-      }
-
-      /* ─── SCREENSHOTS ─── */
-      .screenshots-track {
-        display: flex;
-        gap: 1.25rem;
-        overflow-x: auto;
-        padding-bottom: 1rem;
-        scrollbar-width: thin;
-        scrollbar-color: var(--border-mid) transparent;
-      }
-
-      .screenshots-track::-webkit-scrollbar {
-        height: 4px;
-      }
-
-      .screenshots-track::-webkit-scrollbar-track {
-        background: transparent;
-      }
-
-      .screenshots-track::-webkit-scrollbar-thumb {
-        background: var(--border-mid);
-        border-radius: 2px;
-      }
-
-      .screenshot {
-        flex-shrink: 0;
-        width: 220px;
-        border: 1px solid var(--border);
-        border-radius: 4px;
-        overflow: hidden;
-        transition: border-color 0.18s;
-      }
-
-      .screenshot:hover {
-        border-color: var(--border-mid);
-      }
-
-      .screenshot img {
-        width: 100%;
-        height: auto;
-        display: block;
-      }
-
-      /* ─── FOOTER ─── */
-      footer {
-        border-top: 1px solid var(--border);
-        padding: 2rem 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 1rem;
-        max-width: 100%;
-      }
-
-      .footer-left {
-        font-size: 0.62rem;
-        color: var(--text-muted);
-        letter-spacing: 0.05em;
-      }
-
-      .footer-links {
-        display: flex;
-        gap: 2rem;
-      }
-
-      .footer-links a {
-        font-size: 0.62rem;
-        color: var(--text-muted);
-        text-decoration: none;
-        letter-spacing: 0.05em;
-        transition: color 0.18s;
-      }
-
-      .footer-links a:hover {
-        color: var(--amber);
-      }
-
-      /* ─── ANIMATIONS ─── */
-      @keyframes fadeUp {
-        from {
-          opacity: 0;
-          transform: translateY(16px);
-        }
-
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      /* ─── RESPONSIVE ─── */
-      @media (max-width: 700px) {
-        .features-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .download-row {
-          flex-direction: column;
-          align-items: stretch;
-        }
-
-        .btn {
-          justify-content: center;
-        }
-
-        .step {
-          grid-template-columns: 3.5rem 1fr;
-          gap: 1rem;
-        }
-
-        .step-num {
-          font-size: 3rem;
-        }
-
-        .perm-card {
-          grid-template-columns: 1fr;
-        }
-
-        footer {
-          flex-direction: column;
-          text-align: center;
-        }
-
-        .footer-links {
-          justify-content: center;
-        }
-
-        .compat-strip {
-          gap: 1.5rem;
-        }
-      }
-    </style>
-  </head>
-
-  <body>
+        href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;700;900&family=Azeret+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="home.css" />
+</head>
+
+<body>
     <!-- ═══ HERO ═══ -->
     <section class="hero">
-      <div class="orb"></div>
-      <div class="orb-ring"></div>
+        <div class="orb"></div>
+        <div class="orb-ring"></div>
 
-      <div class="hero-content">
-        <p class="eyebrow">Android Utility</p>
+        <div class="hero-content">
+            <p class="eyebrow">Android Utility</p>
 
-        <h1 class="app-name">STIM<span class="accent">S</span></h1>
+            <h1 class="app-name">STIM<span class="accent">S</span></h1>
 
-        <p class="tagline">
-          Your screen stays on when you need it to.<br />
-          Pick the apps. Forget the rest.
-        </p>
+            <p class="tagline">
+                Your screen stays on when you need it to.<br />
+                Pick the apps. Forget the rest.
+            </p>
 
-        <div class="download-row">
-          <!-- Google Play — uncomment href when available -->
-          <a href="#" class="btn btn-amber disabled" aria-disabled="true">
-            <!-- Play icon -->
-            <svg class="icon" viewBox="0 0 24 24">
-              <path
-                d="M5.31 3.07C4.55 2.64 3.79 3.13 3.79 4.01v15.98c0 .88.76 1.37 1.52.94l14.1-7.99a1.07 1.07 0 0 0 0-1.88L5.31 3.07z"
-              />
-            </svg>
-            Google Play
-            <span class="badge">SOON</span>
-          </a>
+            <div class="download-row">
+                <!-- Google Play — uncomment href when available -->
+                <a href="#" class="btn btn-amber disabled" aria-disabled="true">
+                    <!-- Play icon -->
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path
+                            d="M5.31 3.07C4.55 2.64 3.79 3.13 3.79 4.01v15.98c0 .88.76 1.37 1.52.94l14.1-7.99a1.07 1.07 0 0 0 0-1.88L5.31 3.07z" />
+                    </svg>
+                    Google Play
+                    <span class="badge">SOON</span>
+                </a>
 
-          <!-- F-Droid -->
-          <a href="https://f-droid.org/en/packages/acidburn.stims/" class="btn btn-amber" target="_blank" rel="noopener noreferrer">
-            <!-- Box icon -->
-            <svg class="icon" viewBox="0 0 24 24">
-              <path
-                d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zm0 12H4V9h16v10zM20 3H4v2h16V3z"
-              />
-            </svg>
-            F-Droid
-          </a>
+                <!-- F-Droid -->
+                <a href="https://f-droid.org/en/packages/acidburn.stims/" class="btn btn-amber" target="_blank"
+                    rel="noopener noreferrer">
+                    <!-- Box icon -->
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path
+                            d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zm0 12H4V9h16v10zM20 3H4v2h16V3z" />
+                    </svg>
+                    F-Droid
+                </a>
 
-          <!-- GitHub -->
-          <a
-            href="https://github.com/acidburnmonkey/stims"
-            class="btn btn-ghost"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <svg class="icon" viewBox="0 0 24 24">
-              <path
-                d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"
-              />
-            </svg>
-            GitHub
-          </a>
+                <!-- GitHub -->
+                <a href="https://github.com/acidburnmonkey/stims" class="btn btn-ghost" target="_blank"
+                    rel="noopener noreferrer">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path
+                            d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z" />
+                    </svg>
+                    GitHub
+                </a>
+            </div>
         </div>
-      </div>
     </section>
 
     <!-- ═══ COMPAT STRIP ═══ -->
     <div class="compat-strip">
-      <span class="compat-item">Minimum <span>Android 7.0 (API 24)</span></span>
-      <span class="compat-item">Target <span>Android 15 (API 35)</span></span>
-      <span class="compat-item">Size <span>Lightweight</span></span>
-      <span class="compat-item">License <span>GPL v3</span></span>
+        <span class="compat-item">Minimum <span>Android 7.0 (API 24)</span></span>
+        <span class="compat-item">Target <span>Android 15 (API 35)</span></span>
+        <span class="compat-item">Size <span>Lightweight</span></span>
+        <span class="compat-item">License <span>GPL v3</span></span>
     </div>
 
     <!-- ═══ SCREENSHOTS ═══ -->
     <div class="section">
-      <p class="section-label">Screenshots</p>
-      <div class="screenshots-track">
-        <div class="screenshot">
-          <img
-            src="phoneScreenshots/s1.jpeg"
-            alt="Stims screenshot 1"
-            loading="lazy"
-          />
+        <p class="section-label">Screenshots</p>
+        <div class="screenshots-track">
+            <div class="screenshot">
+                <img src="phoneScreenshots/s1.jpeg" alt="Stims screenshot 1" loading="lazy" />
+            </div>
+            <div class="screenshot">
+                <img src="phoneScreenshots/s2.jpeg" alt="Stims screenshot 2" loading="lazy" />
+            </div>
+            <div class="screenshot">
+                <img src="phoneScreenshots/s3.jpeg" alt="Stims screenshot 3" loading="lazy" />
+            </div>
         </div>
-        <div class="screenshot">
-          <img
-            src="phoneScreenshots/s2.jpeg"
-            alt="Stims screenshot 2"
-            loading="lazy"
-          />
-        </div>
-        <div class="screenshot">
-          <img
-            src="phoneScreenshots/s3.jpeg"
-            alt="Stims screenshot 3"
-            loading="lazy"
-          />
-        </div>
-      </div>
     </div>
 
     <hr />
 
     <!-- ═══ FEATURES ═══ -->
     <div class="section">
-      <p class="section-label">What it does</p>
-      <div class="features-grid">
-        <div class="feature-card">
-          <span class="feature-glyph">◉</span>
-          <h3 class="feature-title">Per-app control</h3>
-          <p class="feature-desc">
-            Choose exactly which apps keep the screen awake. Every other app
-            behaves as normal. Your battery, your rules.
-          </p>
+        <p class="section-label">What it does</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-glyph">◉</span>
+                <h3 class="feature-title">Per-app control</h3>
+                <p class="feature-desc">
+                    Choose exactly which apps keep the screen awake. Every other app
+                    behaves as normal. Your battery, your rules.
+                </p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-glyph">◈</span>
+                <h3 class="feature-title">Silent service</h3>
+                <p class="feature-desc">
+                    A lightweight background service watches the foreground app and
+                    manages the wake lock automatically — no interaction needed.
+                </p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-glyph">◇</span>
+                <h3 class="feature-title">Zero bloat</h3>
+                <p class="feature-desc">
+                    No accounts. No analytics. No network access. No trackers. One
+                    purpose, done well.
+                </p>
+            </div>
         </div>
-        <div class="feature-card">
-          <span class="feature-glyph">◈</span>
-          <h3 class="feature-title">Silent service</h3>
-          <p class="feature-desc">
-            A lightweight background service watches the foreground app and
-            manages the wake lock automatically — no interaction needed.
-          </p>
-        </div>
-        <div class="feature-card">
-          <span class="feature-glyph">◇</span>
-          <h3 class="feature-title">Zero bloat</h3>
-          <p class="feature-desc">
-            No accounts. No analytics. No network access. No trackers. One
-            purpose, done well.
-          </p>
-        </div>
-      </div>
     </div>
 
     <hr />
 
     <!-- ═══ HOW IT WORKS ═══ -->
     <div class="section">
-      <p class="section-label">Setup</p>
-      <div class="steps-list">
-        <div class="step">
-          <div class="step-num">01</div>
-          <div>
-            <p class="step-title">Grant Usage Access</p>
-            <p class="step-desc">
-              On first launch, Stims will open the system permission screen.
-              Navigate to
-              <span class="step-code"
-                >Settings → Apps → Special app access → Usage access</span
-              >, find Stims, and toggle it on.
-            </p>
-          </div>
+        <p class="section-label">Setup</p>
+        <div class="steps-list">
+            <div class="step">
+                <div class="step-num">01</div>
+                <div>
+                    <p class="step-title">Grant Usage Access</p>
+                    <p class="step-desc">
+                        On first launch, Stims will open the system permission screen.
+                        Navigate to
+                        <span class="step-code">Settings → Apps → Special app access → Usage access</span>, find Stims,
+                        and toggle it on.
+                    </p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">02</div>
+                <div>
+                    <p class="step-title">Pick your apps</p>
+                    <p class="step-desc">
+                        Back in Stims, tap any app in the list to mark it. Your selection
+                        is saved immediately — no confirm button needed.
+                    </p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">03</div>
+                <div>
+                    <p class="step-title">Done</p>
+                    <p class="step-desc">
+                        Switch to a marked app and the screen stays on at full brightness.
+                        Switch away and normal sleep behavior returns. That's the whole
+                        thing.
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="step">
-          <div class="step-num">02</div>
-          <div>
-            <p class="step-title">Pick your apps</p>
-            <p class="step-desc">
-              Back in Stims, tap any app in the list to mark it. Your selection
-              is saved immediately — no confirm button needed.
-            </p>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">03</div>
-          <div>
-            <p class="step-title">Done</p>
-            <p class="step-desc">
-              Switch to a marked app and the screen stays on at full brightness.
-              Switch away and normal sleep behavior returns. That's the whole
-              thing.
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
 
     <hr />
 
     <!-- ═══ PERMISSIONS ═══ -->
     <div class="section">
-      <p class="section-label">Permissions</p>
-      <div class="perm-card">
-        <div class="perm-dot">◎</div>
-        <div>
-          <p class="perm-name">Usage Access</p>
-          <p class="perm-desc">
-            Used solely to detect which app is currently in the foreground so
-            the wake lock can be acquired or released accordingly. This data is
-            processed entirely on-device and is never transmitted anywhere.
-            Stims has no internet permission and cannot contact any external
-            server.
-          </p>
+        <p class="section-label">Permissions</p>
+        <div class="perm-card">
+            <div class="perm-dot">◎</div>
+            <div>
+                <p class="perm-name">Usage Access</p>
+                <p class="perm-desc">
+                    Used solely to detect which app is currently in the foreground so
+                    the wake lock can be acquired or released accordingly. This data is
+                    processed entirely on-device and is never transmitted anywhere.
+                    Stims has no internet permission and cannot contact any external
+                    server.
+                </p>
+            </div>
         </div>
-      </div>
     </div>
 
     <!-- ═══ FOOTER ═══ -->
     <footer>
-      <p class="footer-left">
-        Stims &nbsp;·&nbsp; Android 7.0+ &nbsp;·&nbsp; Open Source
-      </p>
-      <nav class="footer-links">
-        <a
-          href="https://github.com/acidburnmonkey/stims"
-          target="_blank"
-          rel="noopener noreferrer"
-          >GitHub</a
-        >
-        <a href="privacy.html">Privacy Policy</a>
-      </nav>
+        <p class="footer-left">
+            Stims &nbsp;·&nbsp; Android 7.0+ &nbsp;·&nbsp; Open Source
+        </p>
+        <nav class="footer-links">
+            <a href="https://github.com/acidburnmonkey/stims" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="privacy.html">Privacy Policy</a>
+        </nav>
     </footer>
-  </body>
+</body>
+
 </html>

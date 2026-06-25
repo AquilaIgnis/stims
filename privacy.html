@@ -1,382 +1,155 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy — Stims</title>
-  <meta name="description" content="Privacy policy for Stims, an Android app that keeps your screen awake for selected apps.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Azeret+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg:         #070707;
-      --surface:    #0e0e0e;
-      --border:     #1c1c1c;
-      --border-mid: #282828;
-      --amber:      #E89A0A;
-      --text:       #EDE8DC;
-      --text-dim:   #8A857C;
-      --text-muted: #474340;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy — Stims</title>
+    <meta name="description"
+        content="Privacy policy for Stims, an Android app that keeps your screen awake for selected apps." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Azeret+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet" />
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: 'Azeret Mono', monospace;
-      font-weight: 300;
-      line-height: 1.75;
-      min-height: 100vh;
-    }
-
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-      opacity: 0.035;
-      pointer-events: none;
-      z-index: 999;
-    }
-
-    /* ─── HEADER ─── */
-    header {
-      border-bottom: 1px solid var(--border);
-      padding: 1.25rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .header-logo {
-      font-family: 'Big Shoulders Display', sans-serif;
-      font-weight: 900;
-      font-size: 1.5rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--text);
-      text-decoration: none;
-    }
-
-    .header-logo span { color: var(--amber); }
-
-    .header-back {
-      font-size: 0.62rem;
-      color: var(--text-muted);
-      text-decoration: none;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      transition: color 0.18s;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    .header-back:hover { color: var(--amber); }
-
-    /* ─── HERO ─── */
-    .doc-hero {
-      padding: 5rem 2rem 3rem;
-      max-width: 720px;
-      margin: 0 auto;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .doc-eyebrow {
-      font-size: 0.6rem;
-      letter-spacing: 0.4em;
-      color: var(--amber);
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-    }
-
-    .doc-title {
-      font-family: 'Big Shoulders Display', sans-serif;
-      font-weight: 900;
-      font-size: clamp(3rem, 8vw, 5.5rem);
-      line-height: 0.9;
-      text-transform: uppercase;
-      color: var(--text);
-      margin-bottom: 2rem;
-    }
-
-    .doc-meta {
-      font-size: 0.65rem;
-      color: var(--text-muted);
-      letter-spacing: 0.08em;
-    }
-
-    /* ─── SUMMARY CARD ─── */
-    .summary-card {
-      max-width: 720px;
-      margin: 3rem auto 0;
-      padding: 0 2rem;
-    }
-
-    .summary-box {
-      border: 1px solid var(--amber);
-      border-left: 3px solid var(--amber);
-      padding: 1.5rem 1.75rem;
-      background: rgba(232,154,10,0.04);
-    }
-
-    .summary-box p {
-      font-size: 0.78rem;
-      font-weight: 400;
-      color: var(--text);
-      line-height: 1.85;
-    }
-
-    .summary-box strong {
-      color: var(--amber);
-      font-weight: 500;
-    }
-
-    /* ─── DOC BODY ─── */
-    .doc-body {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 3rem 2rem 6rem;
-    }
-
-    .doc-section {
-      margin-bottom: 3.5rem;
-    }
-
-    .doc-section-num {
-      font-size: 0.58rem;
-      letter-spacing: 0.35em;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-
-    .doc-section-title {
-      font-family: 'Big Shoulders Display', sans-serif;
-      font-weight: 700;
-      font-size: 1.6rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--text);
-      margin-bottom: 1.25rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .doc-section p {
-      font-size: 0.78rem;
-      font-weight: 300;
-      color: var(--text-dim);
-      line-height: 1.9;
-      margin-bottom: 1rem;
-    }
-
-    .doc-section p:last-child { margin-bottom: 0; }
-
-    .doc-section ul {
-      list-style: none;
-      padding: 0;
-      margin: 0.75rem 0;
-    }
-
-    .doc-section ul li {
-      font-size: 0.78rem;
-      font-weight: 300;
-      color: var(--text-dim);
-      line-height: 1.9;
-      padding-left: 1.5rem;
-      position: relative;
-      margin-bottom: 0.4rem;
-    }
-
-    .doc-section ul li::before {
-      content: '—';
-      position: absolute;
-      left: 0;
-      color: var(--border-mid);
-    }
-
-    .highlight {
-      color: var(--text);
-      font-weight: 400;
-    }
-
-    .mono-tag {
-      display: inline-block;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 0.08rem 0.4rem;
-      border-radius: 2px;
-      font-size: 0.7rem;
-      color: var(--amber);
-    }
-
-    /* Contact block */
-    .contact-block {
-      border: 1px solid var(--border);
-      padding: 1.5rem;
-      margin-top: 1.5rem;
-    }
-
-    .contact-label {
-      font-size: 0.58rem;
-      letter-spacing: 0.25em;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-
-    .contact-block a {
-      color: var(--amber);
-      text-decoration: none;
-      font-size: 0.78rem;
-      transition: color 0.18s;
-    }
-
-    .contact-block a:hover {
-      color: #FFB020;
-      text-decoration: underline;
-    }
-
-    /* ─── FOOTER ─── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 1.75rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .footer-left {
-      font-size: 0.62rem;
-      color: var(--text-muted);
-      letter-spacing: 0.05em;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 2rem;
-    }
-
-    .footer-links a {
-      font-size: 0.62rem;
-      color: var(--text-muted);
-      text-decoration: none;
-      letter-spacing: 0.05em;
-      transition: color 0.18s;
-    }
-
-    .footer-links a:hover { color: var(--amber); }
-
-    @media (max-width: 600px) {
-      footer { flex-direction: column; text-align: center; }
-      .footer-links { justify-content: center; }
-    }
-  </style>
+    <link rel="stylesheet" href="privacy.css" />
 </head>
+
 <body>
+    <!-- ═══ HEADER ═══ -->
+    <header>
+        <a href="index.html" class="header-logo">STIM<span>S</span></a>
+        <a href="index.html" class="header-back"> ← Back to home </a>
+    </header>
 
-  <!-- ═══ HEADER ═══ -->
-  <header>
-    <a href="index.html" class="header-logo">STIM<span>S</span></a>
-    <a href="index.html" class="header-back">
-      ← Back to home
-    </a>
-  </header>
-
-  <!-- ═══ DOC HERO ═══ -->
-  <div class="doc-hero">
-    <p class="doc-eyebrow">Legal</p>
-    <h1 class="doc-title">Privacy<br>Policy</h1>
-    <p class="doc-meta">Effective date: 2026-03-24 &nbsp;·&nbsp; Applies to: Stims for Android</p>
-  </div>
-
-  <!-- ═══ SUMMARY ═══ -->
-  <div class="summary-card">
-    <div class="summary-box">
-      <p>
-        <strong>Short version:</strong> Stims collects no personal data, sends nothing to any server, and contains no third-party SDKs, analytics, or advertising. Everything the app does stays entirely on your device.
-      </p>
-    </div>
-  </div>
-
-  <!-- ═══ POLICY BODY ═══ -->
-  <div class="doc-body">
-
-    <div class="doc-section">
-      <p class="doc-section-num">§ 01</p>
-      <h2 class="doc-section-title">Information We Collect</h2>
-      <p><span class="highlight">We collect no personal information.</span> Stims does not ask for, store, or transmit any data that identifies you or your device to us or to any third party.</p>
+    <!-- ═══ DOC HERO ═══ -->
+    <div class="doc-hero">
+        <p class="doc-eyebrow">Legal</p>
+        <h1 class="doc-title">Privacy<br />Policy</h1>
+        <p class="doc-meta">
+            Effective date: 2026-03-24 &nbsp;·&nbsp; Applies to: Stims for Android
+        </p>
     </div>
 
-    <div class="doc-section">
-      <p class="doc-section-num">§ 02</p>
-      <h2 class="doc-section-title">Permissions Used</h2>
-      <p>Stims requires one special permission to function:</p>
-      <ul>
-        <li>
-          <span class="highlight">Usage Access</span> — allows the app to detect which app is currently in the foreground. This is used exclusively to determine whether to acquire or release a screen wake lock. The data is read in-process, never written to persistent storage beyond the current session, and never transmitted.
-        </li>
-      </ul>
-      <p>Your list of selected apps is stored in <span class="mono-tag">SharedPreferences</span> — local device storage only, never synced or uploaded.</p>
-      <p>Stims has <span class="highlight">no internet permission</span> in its manifest. It is architecturally incapable of making network requests.</p>
+    <!-- ═══ SUMMARY ═══ -->
+    <div class="summary-card">
+        <div class="summary-box">
+            <p>
+                <strong>Short version:</strong> Stims collects no personal data, sends
+                nothing to any server, and contains no third-party SDKs, analytics, or
+                advertising. Everything the app does stays entirely on your device.
+            </p>
+        </div>
     </div>
 
-    <div class="doc-section">
-      <p class="doc-section-num">§ 03</p>
-      <h2 class="doc-section-title">Data Sharing</h2>
-      <p>We share no data with anyone because we collect no data. There are no third-party SDKs, no analytics libraries, no advertising networks, and no crash reporting services included in the app.</p>
+    <!-- ═══ POLICY BODY ═══ -->
+    <div class="doc-body">
+        <div class="doc-section">
+            <p class="doc-section-num">§ 01</p>
+            <h2 class="doc-section-title">Information We Collect</h2>
+            <p>
+                <span class="highlight">We collect no personal information.</span>
+                Stims does not ask for, store, or transmit any data that identifies
+                you or your device to us or to any third party.
+            </p>
+        </div>
+
+        <div class="doc-section">
+            <p class="doc-section-num">§ 02</p>
+            <h2 class="doc-section-title">Permissions Used</h2>
+            <p>Stims requires one special permission to function:</p>
+            <ul>
+                <li>
+                    <span class="highlight">Usage Access</span> — allows the app to
+                    detect which app is currently in the foreground. This is used
+                    exclusively to determine whether to acquire or release a screen wake
+                    lock. The data is read in-process, never written to persistent
+                    storage beyond the current session, and never transmitted.
+                </li>
+            </ul>
+            <p>
+                Your list of selected apps is stored in
+                <span class="mono-tag">SharedPreferences</span> — local device storage
+                only, never synced or uploaded.
+            </p>
+            <p>
+                Stims has <span class="highlight">no internet permission</span> in its
+                manifest. It is architecturally incapable of making network requests.
+            </p>
+        </div>
+
+        <div class="doc-section">
+            <p class="doc-section-num">§ 03</p>
+            <h2 class="doc-section-title">Data Sharing</h2>
+            <p>
+                We share no data with anyone because we collect no data. There are no
+                third-party SDKs, no analytics libraries, no advertising networks, and
+                no crash reporting services included in the app.
+            </p>
+        </div>
+
+        <div class="doc-section">
+            <p class="doc-section-num">§ 04</p>
+            <h2 class="doc-section-title">Data Storage &amp; Retention</h2>
+            <p>
+                The only persistent data Stims stores is your list of selected apps,
+                saved to local <span class="mono-tag">SharedPreferences</span> on your
+                device. This data:
+            </p>
+            <ul>
+                <li>Never leaves your device</li>
+                <li>Is deleted when you uninstall the app</li>
+                <li>
+                    Can be cleared at any time via Settings → Apps → Stims → Clear data
+                </li>
+            </ul>
+        </div>
+
+        <div class="doc-section">
+            <p class="doc-section-num">§ 05</p>
+            <h2 class="doc-section-title">Children's Privacy</h2>
+            <p>
+                Stims does not knowingly collect information from anyone, including
+                children under the age of 13. Because no data is collected at all, the
+                app has no age-specific data practices.
+            </p>
+        </div>
+
+        <div class="doc-section">
+            <p class="doc-section-num">§ 06</p>
+            <h2 class="doc-section-title">Changes to This Policy</h2>
+            <p>
+                If the privacy practices of Stims change — for example if a future
+                version adds a feature requiring network access — this policy will be
+                updated and the effective date revised. The current policy always
+                reflects the latest published version of the app.
+            </p>
+        </div>
+
+        <div class="doc-section">
+            <p class="doc-section-num">§ 07</p>
+            <h2 class="doc-section-title">Contact</h2>
+            <p>
+                Questions about this policy or the app can be directed to the project
+                maintainer via GitHub:
+            </p>
+            <div class="contact-block">
+                <p class="contact-label">GitHub</p>
+                <a href="https://github.com/acidburnmonkey/stims" target="_blank"
+                    rel="noopener noreferrer">github.com/acidburnmonkey/stims</a>
+            </div>
+        </div>
     </div>
 
-    <div class="doc-section">
-      <p class="doc-section-num">§ 04</p>
-      <h2 class="doc-section-title">Data Storage &amp; Retention</h2>
-      <p>The only persistent data Stims stores is your list of selected apps, saved to local <span class="mono-tag">SharedPreferences</span> on your device. This data:</p>
-      <ul>
-        <li>Never leaves your device</li>
-        <li>Is deleted when you uninstall the app</li>
-        <li>Can be cleared at any time via Settings → Apps → Stims → Clear data</li>
-      </ul>
-    </div>
-
-    <div class="doc-section">
-      <p class="doc-section-num">§ 05</p>
-      <h2 class="doc-section-title">Children's Privacy</h2>
-      <p>Stims does not knowingly collect information from anyone, including children under the age of 13. Because no data is collected at all, the app has no age-specific data practices.</p>
-    </div>
-
-    <div class="doc-section">
-      <p class="doc-section-num">§ 06</p>
-      <h2 class="doc-section-title">Changes to This Policy</h2>
-      <p>If the privacy practices of Stims change — for example if a future version adds a feature requiring network access — this policy will be updated and the effective date revised. The current policy always reflects the latest published version of the app.</p>
-    </div>
-
-    <div class="doc-section">
-      <p class="doc-section-num">§ 07</p>
-      <h2 class="doc-section-title">Contact</h2>
-      <p>Questions about this policy or the app can be directed to the project maintainer via GitHub:</p>
-      <div class="contact-block">
-        <p class="contact-label">GitHub</p>
-        <a href="https://github.com/acidburnmonkey/stims" target="_blank" rel="noopener noreferrer">github.com/acidburnmonkey/stims</a>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ═══ FOOTER ═══ -->
-  <footer>
-    <p class="footer-left">Stims &nbsp;·&nbsp; Privacy Policy</p>
-    <nav class="footer-links">
-      <a href="index.html">Home</a>
-      <a href="https://github.com/acidburnmonkey/stims" target="_blank" rel="noopener noreferrer">GitHub</a>
-    </nav>
-  </footer>
-
+    <!-- ═══ FOOTER ═══ -->
+    <footer>
+        <p class="footer-left">Stims &nbsp;·&nbsp; Privacy Policy</p>
+        <nav class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="https://github.com/acidburnmonkey/stims" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </nav>
+    </footer>
 </body>
+
 </html>
