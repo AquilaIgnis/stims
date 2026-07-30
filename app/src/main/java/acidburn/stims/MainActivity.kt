@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        prefs = getSharedPreferences("stims_prefs", Context.MODE_PRIVATE)
+        prefs = getSharedPreferences(StimsService.PREFS_NAME, Context.MODE_PRIVATE)
 
         setContent {
             StimsTheme {
@@ -126,19 +126,19 @@ fun AppListScreen(
 
     val stimmedPackages = remember {
         mutableStateListOf<String>().apply {
-            addAll(prefs.getStringSet("stimmed_apps", emptySet()) ?: emptySet())
+            addAll(prefs.getStringSet(StimsService.KEY_STIMMED_APPS, emptySet()) ?: emptySet())
         }
     }
 
     val tempSelected = remember { mutableStateListOf<String>() }
 
-    var forceOverlay by remember { mutableStateOf(prefs.getBoolean("force_overlay", false)) }
+    var forceOverlay by remember { mutableStateOf(prefs.getBoolean(StimsService.KEY_FORCE_OVERLAY, false)) }
 
     LaunchedEffect(stimmedPackages.toList(), forceOverlay) {
-        prefs.edit().putStringSet("stimmed_apps", stimmedPackages.toSet()).apply()
+        prefs.edit().putStringSet(StimsService.KEY_STIMMED_APPS, stimmedPackages.toSet()).apply()
 
         val intent = Intent(context, StimsService::class.java).apply {
-            putStringArrayListExtra("selected_packages", ArrayList(stimmedPackages))
+            putStringArrayListExtra(StimsService.EXTRA_SELECTED_PACKAGES, ArrayList(stimmedPackages))
             putExtra(StimsService.EXTRA_FORCE_OVERLAY, forceOverlay)
         }
 
@@ -192,7 +192,7 @@ fun AppListScreen(
             forceOverlay = forceOverlay,
             onForceOverlayChange = { checked ->
                 forceOverlay = checked
-                prefs.edit().putBoolean("force_overlay", checked).apply()
+                prefs.edit().putBoolean(StimsService.KEY_FORCE_OVERLAY, checked).apply()
             },
             onOpenOverlaySettings = onOpenOverlaySettings,
             onBack = { showSettings = false }

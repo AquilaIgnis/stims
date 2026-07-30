@@ -30,6 +30,18 @@ Samsung's One UI disables the standard wake lock mechanism, so Stims uses a tran
 
 On stock Android and most other devices this permission is not needed and the app will work without it. It can also be enabled manually via the in-app settings for any device.
 
+### Auto-start after reboot (Samsung / Realme / Xiaomi and similar)
+
+Stims restarts its background service automatically when the phone boots, so you should not have to open the app after a restart.
+
+Some OEM ROMs block that boot broadcast until the app is exempted from their battery manager. If the screen stops staying awake after a reboot and only works again once you open Stims, whitelist the app:
+
+- **Samsung:** Settings → Battery → Background usage limits → add Stims to **Never sleeping apps** (and make sure it is not in _Deep sleeping apps_)
+- **Realme / Oppo:** Settings → Apps → App management → Stims → enable **Auto-start**, and set battery usage to _Allow background activity_
+- **Xiaomi / Redmi:** Settings → Apps → Manage apps → Stims → enable **Autostart**, and set _Battery saver_ to **No restrictions**
+
+Stock Android does not need any of this.
+
 ---
 
 # Building from source

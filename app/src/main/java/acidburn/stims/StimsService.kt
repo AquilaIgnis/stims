@@ -44,23 +44,34 @@ class StimsService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val action = intent?.action
-        val packages = intent?.getStringArrayListExtra("selected_packages")
-
-        if (packages != null) {
-            selectedPackages = packages.toMutableSet()
-            if (BuildConfig.DEBUG) Log.d(TAG, "Updated stimmed packages: $selectedPackages")
+        if (intent?.action == ACTION_STOP) {
+            if (BuildConfig.DEBUG) Log.d(TAG, "Stop action received")
             updateNotification()
+            stopSelf()
+            return START_NOT_STICKY
         }
 
-        val forceOverlay = intent?.getBooleanExtra(EXTRA_FORCE_OVERLAY, false) ?: false
+        // The intent has no extras when we are restarted at boot or by START_STICKY, so
+        // fall back to the persisted selection rather than running with empty state.
+        val prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+        val packages = intent?.getStringArrayListExtra(EXTRA_SELECTED_PACKAGES)
+            ?: prefs.getStringSet(KEY_STIMMED_APPS, emptySet())?.toList()
+        selectedPackages = packages.orEmpty().toMutableSet()
+        if (BuildConfig.DEBUG) Log.d(TAG, "Stimmed packages: $selectedPackages")
+
+        val savedForceOverlay = prefs.getBoolean(KEY_FORCE_OVERLAY, false)
+        val forceOverlay = intent?.getBooleanExtra(EXTRA_FORCE_OVERLAY, savedForceOverlay)
+            ?: savedForceOverlay
         useOverlayStrategy = forceOverlay || OVERLAY_VENDORS.any {
             Build.MANUFACTURER.equals(it, ignoreCase = true)
         }
         if (BuildConfig.DEBUG) Log.d(TAG, "useOverlayStrategy=$useOverlayStrategy forceOverlay=$forceOverlay")
 
-        if (action == ACTION_STOP) {
-            if (BuildConfig.DEBUG) Log.d(TAG, "Stop action received")
+        if (selectedPackages.isEmpty()) {
+            if (BuildConfig.DEBUG) Log.d(TAG, "No stimmed apps, stopping")
+            // startForeground() must still be called before stopping, or the platform
+            // kills us with ForegroundServiceDidNotStartInTimeException.
+            updateNotification()
             stopSelf()
             return START_NOT_STICKY
         }
@@ -200,6 +211,11 @@ class StimsService : Service() {
         const val NOTIFICATION_ID = 1
         const val ACTION_STOP = "acidburn.stims.STOP"
         const val EXTRA_FORCE_OVERLAY = "force_overlay"
+        const val EXTRA_SELECTED_PACKAGES = "selected_packages"
+
+        const val PREFS_NAME = "stims_prefs"
+        const val KEY_STIMMED_APPS = "stimmed_apps"
+        const val KEY_FORCE_OVERLAY = "force_overlay"
         private const val TAG = "StimsService"
 
         // Vendors that disable SCREEN_BRIGHT_WAKE_LOCK — use overlay strategy instead
