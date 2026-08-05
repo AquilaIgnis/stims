@@ -32,8 +32,6 @@ On stock Android and most other devices this permission is not needed and the ap
 
 ### Auto-start after reboot (Samsung / Realme / Xiaomi and similar)
 
-Stims restarts its background service automatically when the phone boots, so you should not have to open the app after a restart.
-
 Some OEM ROMs block that boot broadcast until the app is exempted from their battery manager. If the screen stops staying awake after a reboot and only works again once you open Stims, whitelist the app:
 
 - **Samsung:** Settings → Battery → Background usage limits → add Stims to **Never sleeping apps** (and make sure it is not in _Deep sleeping apps_)
