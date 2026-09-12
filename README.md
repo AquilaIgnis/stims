@@ -67,7 +67,17 @@ For a release bundle (AAB):
 
 ```bash
 ./gradlew bundleRelease
-# output: app/build/outputs/bundle/release/app-release.aab
+```
+
+---
+
+# Tests
+
+```bash
+./gradlew testDebugUnitTest
+
+# Instrumented tests — needs a connected device or running emulator
+./gradlew connectedDebugAndroidTest
 ```
 
 ---
@@ -75,4 +85,4 @@ For a release bundle (AAB):
 ## Compatibility
 
 - **Minimum:** Android 7.0 (Nougat, API 24)
-- **Target:** Android 15 (API 35)
+- **Target:** Android 16 (API 36)

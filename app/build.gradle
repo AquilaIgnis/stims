@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'acidburn.stims'
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         applicationId "acidburn.stims"
         minSdk 24
-        targetSdk 35
+        targetSdk 36
         versionCode 6
         versionName "1.4"
 
@@ -46,6 +46,31 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+
+    testOptions {
+        unitTests {
+            // Robolectric needs the merged resources/assets/manifest of the app.
+            includeAndroidResources = true
+            returnDefaultValues = true
+            all {
+                testLogging {
+                    events "passed", "skipped", "failed"
+                    exceptionFormat "full"
+                }
+                // Robolectric reaches into java.base internals; JDK 17+ needs these opened.
+                jvmArgs(
+                        '--add-opens=java.base/java.lang=ALL-UNNAMED',
+                        '--add-opens=java.base/java.util=ALL-UNNAMED',
+                        '--add-opens=java.base/java.io=ALL-UNNAMED',
+                        '--add-opens=java.base/java.net=ALL-UNNAMED',
+                        '--add-opens=java.base/java.security=ALL-UNNAMED',
+                        '--add-opens=java.base/java.text=ALL-UNNAMED',
+                        '--add-opens=java.base/jdk.internal.access=ALL-UNNAMED',
+                        '--add-opens=java.base/jdk.internal.misc=ALL-UNNAMED',
+                )
+            }
+        }
+    }
 }
 
 dependencies {
@@ -61,11 +86,25 @@ dependencies {
     
     implementation 'com.google.android.material:material:1.12.0'
 
+    // ---- Local unit tests (JVM, Robolectric — no device required) ----
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.robolectric:robolectric:4.17'
+    testImplementation 'androidx.test:core-ktx:1.6.1'
+    testImplementation 'androidx.test.ext:junit-ktx:1.2.1'
+    testImplementation 'com.google.truth:truth:1.4.4'
+    testImplementation platform('androidx.compose:compose-bom:2025.02.00')
+    testImplementation 'androidx.compose.ui:ui-test-junit4'
+
+    // ---- Instrumented tests (on-device / emulator) ----
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test:core-ktx:1.6.1'
+    androidTestImplementation 'androidx.test:runner:1.6.2'
+    androidTestImplementation 'androidx.test:rules:1.6.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+    androidTestImplementation 'com.google.truth:truth:1.4.4'
     androidTestImplementation platform('androidx.compose:compose-bom:2025.02.00')
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
+
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
 }
