@@ -35,8 +35,10 @@ On stock Android and most other devices this permission is not needed and the ap
 Some OEM ROMs block that boot broadcast until the app is exempted from their battery manager. If the screen stops staying awake after a reboot and only works again once you open Stims, whitelist the app:
 
 - **Samsung:** Settings → Battery → Background usage limits → add Stims to **Never sleeping apps** (and make sure it is not in _Deep sleeping apps_)
-- **Realme / Oppo:** Settings → Apps → App management → Stims → enable **Auto-start**, and set battery usage to _Allow background activity_
-- **Xiaomi / Redmi:** Settings → Apps → Manage apps → Stims → enable **Autostart**, and set _Battery saver_ to **No restrictions**
+
+- **Realme / Oppo:** Settings → Stims → enable **Auto-start**, set battery usage to _Allow background activity_
+
+- **Xiaomi / Redmi:** Settings → Stims → enable **Autostart**, set _Battery saver_ to **No restrictions**
 
 Stock Android does not need any of this.
 
