@@ -5,10 +5,10 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.ParcelFileDescriptor
 import android.os.SystemClock
 import android.service.notification.StatusBarNotification
 import androidx.test.platform.app.InstrumentationRegistry
-import java.io.FileInputStream
 
 /** Helpers shared by the on-device tests. */
 
@@ -27,7 +27,10 @@ internal fun shell(command: String): String {
     val descriptor = InstrumentationRegistry.getInstrumentation()
         .uiAutomation
         .executeShellCommand(command)
-    return FileInputStream(descriptor.fileDescriptor).use { it.readBytes().decodeToString() }
+    // AutoCloseInputStream owns the ParcelFileDescriptor; reading the raw FileDescriptor and
+    // closing only the stream races with the descriptor being reclaimed (InterruptedIOException).
+    return ParcelFileDescriptor.AutoCloseInputStream(descriptor)
+        .use { it.readBytes().decodeToString() }
 }
 
 /**
@@ -86,7 +89,18 @@ internal fun waitForServiceForeground(timeoutMillis: Long = 10_000): Boolean =
  * ForegroundServiceDidNotStartInTimeException at the whole process.
  */
 internal fun stopStimsServiceAndWait() {
-    waitFor(5_000) { isStimsServiceForeground() }
+    // Settle first: either the start completed, or nothing was started at all.
+    waitFor(5_000) { isStimsServiceForeground() || !isStimsServiceRunning() }
     targetContext.stopService(Intent(targetContext, StimsService::class.java))
-    waitFor(5_000) { !isStimsServiceRunning() && stimsNotification() == null }
+    waitFor(10_000) { !isStimsServiceRunning() && stimsNotification() == null }
+}
+
+/**
+ * Fails loudly if a previous test leaked a running service — otherwise a "the service must stay
+ * down" assertion silently reports the leftover instead of what the test actually did.
+ */
+internal fun requireServiceStopped() {
+    check(waitFor(10_000) { !isStimsServiceRunning() }) {
+        "StimsService was still running when the test started; a previous test leaked it"
+    }
 }

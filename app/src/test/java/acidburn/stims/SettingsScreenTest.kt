@@ -60,7 +60,7 @@ class SettingsScreenTest {
     fun `credits the author and links to the project`() {
         showSettings()
 
-        composeRule.onNodeWithText("acidburnmonkey").assertIsDisplayed()
+        composeRule.onNodeWithText("AquilaIgnis").assertIsDisplayed()
         composeRule.onNodeWithText("GitHub").assertIsDisplayed()
         composeRule.onNodeWithContentDescription("Open GitHub").assertIsDisplayed()
     }
@@ -73,7 +73,7 @@ class SettingsScreenTest {
 
         val started = shadowOf(composeRule.activity).nextStartedActivity
         assertThat(started.action).isEqualTo(android.content.Intent.ACTION_VIEW)
-        assertThat(started.dataString).isEqualTo("https://github.com/acidburnmonkey/stims")
+        assertThat(started.dataString).isEqualTo("https://github.com/AquilaIgnis/stims")
     }
 
     @Test

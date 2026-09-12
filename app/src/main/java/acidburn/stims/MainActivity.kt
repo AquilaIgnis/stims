@@ -347,7 +347,7 @@ fun SettingsScreen(
             SettingsInfoRow(label = "Version", value = BuildConfig.VERSION_NAME)
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
-            SettingsInfoRow(label = "Author", value = "acidburnmonkey")
+            SettingsInfoRow(label = "Author", value = "AquilaIgnis")
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
             Row(
@@ -355,7 +355,7 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .clickable {
                         context.startActivity(
-                            Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/acidburnmonkey/stims"))
+                            Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/AquilaIgnis/stims"))
                         )
                     }
                     .padding(horizontal = 16.dp, vertical = 16.dp),

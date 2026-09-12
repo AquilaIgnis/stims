@@ -21,6 +21,7 @@ class BootReceiverInstrumentedTest {
     fun setUp() {
         grantUsageAccess()
         clearStimsPrefs()
+        requireServiceStopped()
     }
 
     @After

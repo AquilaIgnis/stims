@@ -1,16 +1,16 @@
 Categories:
   - System
 License: GPL-3.0-only
-AuthorName: acidburnmonkey
+AuthorName: AquilaIgnis
 AuthorEmail: developercontact.gnarly348@slmail.me
-WebSite: https://acidburnmonkey.github.io/stims/
-SourceCode: https://github.com/acidburnmonkey/stims
-IssueTracker: https://github.com/acidburnmonkey/stims/issues
+WebSite: https://aquilaignis.github.io/stims/
+SourceCode: https://github.com/AquilaIgnis/stims
+IssueTracker: https://github.com/AquilaIgnis/stims/issues
 
 AutoName: Stims
 
 RepoType: git
-Repo: https://github.com/acidburnmonkey/stims
+Repo: https://github.com/AquilaIgnis/stims
 
 Builds:
   - versionName: '1.4'

@@ -45,6 +45,7 @@ class StimsServiceInstrumentedTest {
     fun setUp() {
         grantUsageAccess()
         clearStimsPrefs()
+        requireServiceStopped()
     }
 
     @After

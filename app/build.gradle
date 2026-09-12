@@ -3,6 +3,52 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+// ---- Release signing --------------------------------------------------------------------
+// Credentials come from an untracked .env at the repo root (already in .gitignore):
+//   VIVE_KEYSTORE=android-release.jks        # relative to the repo root, or absolute
+//   VIVE_KEYSTORE_PASSWORD=...
+//   VIVE_KEY_ALIAS=stims
+// Environment variables of the same names win over the file, for CI. When neither is present
+// — F-Droid's buildserver, a fresh clone, a contributor's machine — the release build stays
+// unsigned rather than failing, and the APK is named "-unsigned" so it cannot be mistaken for
+// a shippable one. F-Droid signs with their own key, so that path must keep working.
+def readDotEnv = {
+    def values = [:]
+    def envFile = rootProject.file('.env')
+    if (envFile.exists()) {
+        envFile.eachLine { rawLine ->
+            def line = rawLine.trim()
+            if (line.isEmpty() || line.startsWith('#')) return
+            def idx = line.indexOf('=')
+            if (idx <= 0) return
+            def key = line.substring(0, idx).trim()
+            def value = line.substring(idx + 1).trim()
+            if (value.length() >= 2 &&
+                ((value.startsWith('"') && value.endsWith('"')) ||
+                 (value.startsWith("'") && value.endsWith("'")))) {
+                value = value.substring(1, value.length() - 1)
+            }
+            values[key] = value
+        }
+    }
+    return values
+}
+def dotEnv = readDotEnv()
+def signingValue = { String key -> System.getenv(key) ?: dotEnv[key] }
+
+def releaseStorePassword = signingValue('VIVE_KEYSTORE_PASSWORD')
+def releaseKeyAliasName = signingValue('VIVE_KEY_ALIAS')
+// Only one password is configured: the store password also unlocks the key.
+def releaseKeyPasswordValue = signingValue('VIVE_KEY_PASSWORD') ?: releaseStorePassword
+def releaseStorePath = signingValue('VIVE_KEYSTORE')
+def releaseStoreFileValue = null
+if (releaseStorePath) {
+    def candidate = new File(releaseStorePath)
+    releaseStoreFileValue = candidate.isAbsolute() ? candidate : rootProject.file(releaseStorePath)
+}
+def canSignRelease = releaseStoreFileValue != null && releaseStoreFileValue.exists() &&
+        releaseStorePassword && releaseKeyAliasName
+
 android {
     namespace 'acidburn.stims'
     compileSdk 36
@@ -20,10 +66,44 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            if (canSignRelease) {
+                storeFile releaseStoreFileValue
+                storePassword releaseStorePassword
+                keyAlias releaseKeyAliasName
+                keyPassword releaseKeyPasswordValue
+            }
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            if (canSignRelease) signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        // Identical R8 pipeline and keep rules to release, but debug-signed so the instrumented
+        // suite can actually be installed and run against minified, shrunk, obfuscated code:
+        //   ./gradlew connectedMinifiedAndroidTest -PtestMinified
+        minified {
+            initWith release
+            signingConfig signingConfigs.debug
+            matchingFallbacks = ['release']
+            proguardFile 'proguard-rules-instrumentation.pro'
+        }
+    }
+
+    // androidTest runs against debug by default; -PtestMinified points it at the R8 output.
+    testBuildType = project.hasProperty('testMinified') ? 'minified' : 'debug'
+
+    // Ship the release APK as stims-<version>.apk instead of app-release.apk.
+    applicationVariants.all { variant ->
+        if (variant.buildType.name != 'release') return
+        variant.outputs.all { output ->
+            output.outputFileName = "stims-${variant.versionName}${canSignRelease ? '' : '-unsigned'}.apk"
         }
     }
 

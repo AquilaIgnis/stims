@@ -52,7 +52,7 @@ Stock Android does not need any of this.
 **Steps**
 
 ```bash
-git clone https://github.com/acidburnmonkey/stims.git
+git clone https://github.com/AquilaIgnis/stims.git
 cd stims
 ./gradlew assembleDebug
 ```
@@ -78,6 +78,9 @@ For a release bundle (AAB):
 
 # Instrumented tests — needs a connected device or running emulator
 ./gradlew connectedDebugAndroidTest
+
+# Instrumented tests against R8 output (minified, obfuscated, resource-shrunk)
+./gradlew connectedMinifiedAndroidTest -PtestMinified
 ```
 
 ---
