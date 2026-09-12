@@ -1,0 +1,99 @@
+name: build
+
+on:
+  push:
+    branches: [master]
+    tags: ['*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Unit tests + release build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # JDK 21 on purpose: it is what F-Droid's buildserver installs, so CI fails the same way
+      # their build would. AGP 8.13 needs 17+; lint cannot read Java 25 class files.
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: 'platforms;android-36 build-tools;36.0.0'
+
+      # The repo tracks `gradle/` as a symlink to a directory outside the repository, so a fresh
+      # clone has no gradle/wrapper/ and ./gradlew cannot run. Provision Gradle directly at the
+      # version the wrapper pins instead. If the wrapper is ever committed for real, this can
+      # become `- run: ./gradlew ...` with no other change.
+      - name: Set up Gradle 9.0.0
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.0.0'
+
+      # Robolectric downloads a ~100 MB android-all jar per SDK level it runs against
+      # (35 and 24 here) outside the Gradle cache.
+      - name: Cache Robolectric android-all jars
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository/org/robolectric
+          key: robolectric-${{ runner.os }}-${{ hashFiles('app/build.gradle', 'app/src/test/resources/robolectric.properties') }}
+          restore-keys: robolectric-${{ runner.os }}-
+
+      # The whole JVM suite: service, boot receiver, permission flow, both Compose screens,
+      # theme and manifest. No device or emulator involved.
+      - name: Unit tests
+        run: gradle testDebugUnitTest
+
+      # Runs R8, resource shrinking and lintVitalRelease. `if: !cancelled()` so a unit-test
+      # failure still reports whether the release build is broken too.
+      - name: Assemble release
+        if: ${{ !cancelled() }}
+        run: gradle assembleRelease
+
+      # CI has no .env and no keystore, so signing must be skipped rather than fail the build —
+      # that is the same path F-Droid takes. Assert it, so a regression cannot pass silently.
+      - name: Check the release APK is built and unsigned
+        if: ${{ !cancelled() }}
+        run: |
+          shopt -s nullglob
+          apks=(app/build/outputs/apk/release/*.apk)
+          if [ ${#apks[@]} -ne 1 ]; then
+            echo "::error::expected exactly one release APK, found ${#apks[@]}"
+            exit 1
+          fi
+          apk="${apks[0]}"
+          echo "built $(basename "$apk") ($(du -h "$apk" | cut -f1))"
+          case "$(basename "$apk")" in
+            *-unsigned.apk) echo "unsigned, as expected without signing credentials" ;;
+            *) echo "::error::$(basename "$apk") looks signed; CI must not have signing keys"; exit 1 ;;
+          esac
+
+      - name: Upload unit test report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-report
+          path: app/build/reports/tests/testDebugUnitTest
+          if-no-files-found: warn
+
+      - name: Upload unsigned release APK
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk-unsigned
+          path: app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
