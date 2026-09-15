@@ -15,6 +15,7 @@ captures/
 
 # Sensitive info
 local.properties
+.env
 
 # Generated files
 .cxx/
