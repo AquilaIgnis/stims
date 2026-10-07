@@ -26,8 +26,6 @@ class ManifestTest {
         val requested = packageInfo(PackageManager.GET_PERMISSIONS).requestedPermissions!!.toList()
 
         assertThat(requested).containsAtLeast(
-            // enumerating installed apps for the picker
-            android.Manifest.permission.QUERY_ALL_PACKAGES,
             // the two keep-awake strategies
             android.Manifest.permission.WAKE_LOCK,
             android.Manifest.permission.SYSTEM_ALERT_WINDOW,
@@ -39,6 +37,15 @@ class ManifestTest {
             // restarting monitoring after a reboot
             android.Manifest.permission.RECEIVE_BOOT_COMPLETED,
         )
+    }
+
+    @Test
+    fun `QUERY_ALL_PACKAGES is not requested`() {
+        val requested = packageInfo(PackageManager.GET_PERMISSIONS).requestedPermissions!!.toList()
+
+        // The picker only needs launchable apps, which the <queries> block covers; requesting
+        // the broad permission gets the app rejected by Play policy review.
+        assertThat(requested).doesNotContain(android.Manifest.permission.QUERY_ALL_PACKAGES)
     }
 
     @Test
