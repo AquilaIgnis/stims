@@ -2,15 +2,17 @@ package acidburn.stims
 
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.content.pm.ApplicationInfo
-import android.content.pm.ResolveInfo
 import android.view.View
 import androidx.test.core.app.ApplicationProvider
 import org.robolectric.Shadows.shadowOf
+import org.robolectric.shadows.ShadowUsageStatsManager
 
 /**
  * Helpers shared by the Stims unit-test suite. Everything here talks to the same
@@ -39,28 +41,35 @@ internal fun persistForceOverlay(enabled: Boolean) {
     stimsPrefs().edit().putBoolean(StimsService.KEY_FORCE_OVERLAY, enabled).commit()
 }
 
-/** The exact intent [AppListScreen] uses to enumerate launchable apps. */
-internal fun launcherProbeIntent(): Intent =
-    Intent(Intent.ACTION_MAIN, null).apply { addCategory(Intent.CATEGORY_LAUNCHER) }
-
-/** Registers [packageName] as a launchable app whose visible label is [label]. */
-internal fun installLauncherApp(packageName: String, label: String) {
-    shadowOf(appContext.packageManager)
-        .addResolveInfoForIntent(launcherProbeIntent(), launcherResolveInfo(packageName, label))
-}
-
-internal fun launcherResolveInfo(packageName: String, label: String): ResolveInfo =
-    ResolveInfo().apply {
-        activityInfo = ActivityInfo().apply {
-            this.packageName = packageName
-            name = "$packageName.MainActivity"
-            applicationInfo = ApplicationInfo().apply {
+/**
+ * Registers [packageName] as a launchable app whose visible label is [label], with a launcher
+ * activity called [activityName].
+ */
+internal fun installLauncherApp(
+    packageName: String,
+    label: String,
+    activityName: String = "$packageName.MainActivity",
+) {
+    val component = ComponentName(packageName, activityName)
+    shadowOf(appContext.packageManager).apply {
+        addActivityIfNotPresent(component)
+        addOrUpdateActivity(
+            ActivityInfo().apply {
                 this.packageName = packageName
-                flags = ApplicationInfo.FLAG_INSTALLED
+                name = activityName
+                nonLocalizedLabel = label
+                applicationInfo = ApplicationInfo().apply {
+                    this.packageName = packageName
+                    flags = ApplicationInfo.FLAG_INSTALLED
+                }
             }
-        }
-        nonLocalizedLabel = label
+        )
+        addIntentFilterForActivity(
+            component,
+            IntentFilter(Intent.ACTION_MAIN).apply { addCategory(Intent.CATEGORY_LAUNCHER) },
+        )
     }
+}
 
 /** Builds the intent MainActivity sends to the service. */
 internal fun serviceIntent(
@@ -76,9 +85,11 @@ internal fun Context.recordForegroundApp(packageName: String, millisAgo: Long) {
     val usageStatsManager =
         getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
     shadowOf(usageStatsManager).addEvent(
-        packageName,
-        System.currentTimeMillis() - millisAgo,
-        UsageEvents.Event.ACTIVITY_RESUMED,
+        ShadowUsageStatsManager.EventBuilder.buildEvent()
+            .setPackage(packageName)
+            .setTimeStamp(System.currentTimeMillis() - millisAgo)
+            .setEventType(UsageEvents.Event.ACTIVITY_RESUMED)
+            .build()
     )
 }
 

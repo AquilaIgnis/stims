@@ -34,7 +34,7 @@ class StimsServiceMonitorTest {
         appContext.getSystemService(Context.POWER_SERVICE) as PowerManager
 
     private fun setScreenInteractive(interactive: Boolean) {
-        shadowOf(powerManager()).setIsInteractive(interactive)
+        shadowOf(powerManager()).turnScreenOn(interactive)
     }
 
     private fun startMonitoring(vararg packages: String): StimsService {

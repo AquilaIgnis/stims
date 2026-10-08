@@ -54,7 +54,7 @@ class StimsServiceOverlayTest {
 
     private fun setScreenInteractive(interactive: Boolean) {
         shadowOf(appContext.getSystemService(Context.POWER_SERVICE) as PowerManager)
-            .setIsInteractive(interactive)
+            .turnScreenOn(interactive)
     }
 
     @Test

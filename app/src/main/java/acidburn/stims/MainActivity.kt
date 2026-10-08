@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
 import acidburn.stims.ui.theme.StimsTheme
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -101,12 +102,9 @@ class MainActivity : ComponentActivity() {
 
     private fun hasUsageStatsPermission(context: Context): Boolean {
         val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-        val mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            appOps.unsafeCheckOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.packageName)
-        } else {
-            @Suppress("DEPRECATION")
-            appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.packageName)
-        }
+        // Android 16 deprecated unsafeCheckOpNoThrow in favour of checkOpNoThrow, which exists
+        // (and behaves the same) on every supported API level.
+        val mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.packageName)
         return mode == AppOpsManager.MODE_ALLOWED
     }
 }
@@ -117,6 +115,7 @@ fun AppListScreen(
     prefs: SharedPreferences,
     showOverlayWarning: Boolean,
     onOpenOverlaySettings: () -> Unit,
+    loadDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
     val context = LocalContext.current
     val packageManager = context.packageManager
@@ -154,7 +153,7 @@ fun AppListScreen(
     }
 
     LaunchedEffect(Unit) {
-        allApps = withContext(Dispatchers.IO) {
+        allApps = withContext(loadDispatcher) {
             val intent = Intent(Intent.ACTION_MAIN, null).apply {
                 addCategory(Intent.CATEGORY_LAUNCHER)
             }

@@ -15,6 +15,7 @@ import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.Dispatchers
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -51,6 +52,10 @@ class AppListScreenTest {
                     prefs = stimsPrefs(),
                     showOverlayWarning = showOverlayWarning,
                     onOpenOverlaySettings = { overlaySettingsOpened++ },
+                    // Under the Compose test clock, resuming from a background dispatcher flushes
+                    // snapshot changes on that thread and can run a recomposition there, which
+                    // crashes with CalledFromWrongThreadException. Load on the main thread instead.
+                    loadDispatcher = Dispatchers.Unconfined,
                 )
             }
         }
@@ -104,10 +109,7 @@ class AppListScreenTest {
     @Test
     fun `an app exposing several launcher activities is listed once`() {
         // Some apps register more than one LAUNCHER activity; the list must collapse them.
-        shadowOf(appContext.packageManager).addResolveInfoForIntent(
-            launcherProbeIntent(),
-            launcherResolveInfo(PKG_ZEBRA, "Zebra"),
-        )
+        installLauncherApp(PKG_ZEBRA, "Zebra", activityName = "$PKG_ZEBRA.ShortcutActivity")
 
         showAppList()
 
